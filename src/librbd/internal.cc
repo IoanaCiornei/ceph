@@ -1897,8 +1897,7 @@ int mirror_image_disable_internal(ImageCtx *ictx, bool force,
           features_mask |= RBD_FEATURE_EXCLUSIVE_LOCK;
 
           r = Journal<>::create(ictx->md_ctx, ictx->id, ictx->journal_order,
-  			        ictx->journal_splay_width,
-  			        ictx->journal_pool, false, "");
+                                ictx->journal_splay_width, ictx->journal_pool);
           if (r < 0) {
             lderr(cct) << "error creating image journal: " << cpp_strerror(r)
                        << dendl;

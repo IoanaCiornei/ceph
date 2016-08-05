@@ -7244,9 +7244,9 @@ int Client::readdir_r_cb(dir_result_t *d, add_dirent_cb_t cb, void *p)
       fill_stat(in, &st);
       fill_dirent(&de, "..", S_IFDIR, st.st_ino, next_off);
     } else {
-      /* must be at the root (no parent),
-       * so we add the dotdot with a special inode (3) */
-      fill_dirent(&de, "..", S_IFDIR, CEPH_INO_DOTDOT, next_off);
+      /* must be at the root (no parent), so fill out with same info as "." */
+      fill_stat(diri, &st);
+      fill_dirent(&de, "..", S_IFDIR, st.st_ino, next_off);
     }
 
 
@@ -9683,13 +9683,6 @@ int Client::ll_getattr(Inode *in, struct stat *attr, int uid, int gid)
   ldout(cct, 3) << "ll_getattr " << vino << dendl;
   tout(cct) << "ll_getattr" << std::endl;
   tout(cct) << vino.ino.val << std::endl;
-
-  /* special case for dotdot (..) */
-  if (vino.ino.val == CEPH_INO_DOTDOT) {
-    attr->st_mode = S_IFDIR | 0755;
-    attr->st_nlink = 2;
-    return 0;
-  }
 
   int res;
   if (vino.snapid < CEPH_NOSNAP)

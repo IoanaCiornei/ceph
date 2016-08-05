@@ -1573,7 +1573,7 @@ TEST(LibCephFS, DirChangeAttr) {
   ASSERT_EQ(ceph_mkdir(cmount, dirname, 0755), 0);
 
   struct statx	stx;
-  ASSERT_EQ(ceph_statx(cmount, dirname, 0, STATX_BASIC_STATS | STATX_VERSION, &stx), 0);
+  ASSERT_EQ(ceph_statx(cmount, dirname, 0, STATX_VERSION, &stx), 0);
   ASSERT_TRUE(stx.stx_mask & STATX_VERSION);
 
   uint64_t old_change_attr = stx.stx_version;
@@ -1582,14 +1582,14 @@ TEST(LibCephFS, DirChangeAttr) {
   ASSERT_LT(0, fd);
   ceph_close(cmount, fd);
 
-  ASSERT_EQ(ceph_statx(cmount, dirname, 0, STATX_BASIC_STATS | STATX_VERSION, &stx), 0);
+  ASSERT_EQ(ceph_statx(cmount, dirname, 0, STATX_VERSION, &stx), 0);
   ASSERT_TRUE(stx.stx_mask & STATX_VERSION);
   ASSERT_NE(stx.stx_version, old_change_attr);
 
   old_change_attr = stx.stx_version;
 
   ASSERT_EQ(ceph_unlink(cmount, filename), 0);
-  ASSERT_EQ(ceph_statx(cmount, dirname, 0, STATX_BASIC_STATS | STATX_VERSION, &stx), 0);
+  ASSERT_EQ(ceph_statx(cmount, dirname, 0, STATX_VERSION, &stx), 0);
   ASSERT_TRUE(stx.stx_mask & STATX_VERSION);
   ASSERT_NE(stx.stx_version, old_change_attr);
 

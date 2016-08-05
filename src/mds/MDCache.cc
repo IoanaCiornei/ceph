@@ -2278,12 +2278,13 @@ void MDCache::predirty_journal_parents(MutationRef mut, EMetaBlob *blob,
     if (do_parent_mtime || linkunlink) {
       dout(20) << "predirty_journal_parents add_delta " << pf->fragstat << dendl;
       dout(20) << "predirty_journal_parents         - " << pf->accounted_fragstat << dendl;
-      bool touched_mtime = false;
-      pi->dirstat.add_delta(pf->fragstat, pf->accounted_fragstat, touched_mtime);
+      bool touched_mtime = false, touched_chattr = false;
+      pi->dirstat.add_delta(pf->fragstat, pf->accounted_fragstat, touched_mtime, touched_chattr);
       pf->accounted_fragstat = pf->fragstat;
       if (touched_mtime)
 	pi->mtime = pi->ctime = pi->dirstat.mtime;
-      pi->change_attr = pi->dirstat.change_attr;
+      if (touched_chattr)
+	pi->change_attr = pi->dirstat.change_attr;
       dout(20) << "predirty_journal_parents     gives " << pi->dirstat << " on " << *pin << dendl;
 
       if (parent->get_frag() == frag_t()) { // i.e., we are the only frag

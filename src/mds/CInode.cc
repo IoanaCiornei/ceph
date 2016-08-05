@@ -2041,6 +2041,7 @@ void CInode::finish_scatter_gather_update(int type)
       }
       if (touched_mtime)
 	pi->mtime = pi->ctime = pi->dirstat.mtime;
+      pi->change_attr = pi->dirstat.change_attr;
       dout(20) << " final dirstat " << pi->dirstat << dendl;
 
       if (dirstat_valid && !dirstat.same_sums(pi->dirstat)) {

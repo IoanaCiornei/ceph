@@ -3421,6 +3421,7 @@ void Client::queue_cap_snap(Inode *in, SnapContext& old_snapc)
     capsnap->uid = in->uid;
     capsnap->gid = in->gid;
     capsnap->mode = in->mode;
+    capsnap->btime = in->btime;
     capsnap->xattrs = in->xattrs;
     capsnap->xattr_version = in->xattr_version;
  
@@ -3519,6 +3520,7 @@ void Client::flush_snaps(Inode *in, bool all_again)
     m->head.uid = capsnap->uid;
     m->head.gid = capsnap->gid;
     m->head.mode = capsnap->mode;
+    m->btime = capsnap->btime;
 
     m->size = capsnap->size;
 
@@ -4869,6 +4871,7 @@ void Client::handle_cap_grant(MetaSession *session, Inode *in, Cap *cap, MClient
     in->mode = m->head.mode;
     in->uid = m->head.uid;
     in->gid = m->head.gid;
+    in->btime = m->btime;
   }
   bool deleted_inode = false;
   if ((issued & CEPH_CAP_LINK_EXCL) == 0) {

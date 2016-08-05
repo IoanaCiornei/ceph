@@ -1577,6 +1577,7 @@ TEST(LibCephFS, DirChangeAttr) {
   ASSERT_TRUE(stx.stx_mask & STATX_VERSION);
 
   uint64_t old_change_attr = stx.stx_version;
+  std::cout << "version=" << old_change_attr << std::endl;
 
   int fd = ceph_open(cmount, filename, O_RDWR|O_CREAT|O_EXCL, 0666);
   ASSERT_LT(0, fd);
@@ -1587,11 +1588,13 @@ TEST(LibCephFS, DirChangeAttr) {
   ASSERT_NE(stx.stx_version, old_change_attr);
 
   old_change_attr = stx.stx_version;
+  std::cout << "version=" << old_change_attr << std::endl;
 
   ASSERT_EQ(ceph_unlink(cmount, filename), 0);
   ASSERT_EQ(ceph_statx(cmount, dirname, 0, STATX_VERSION, &stx), 0);
   ASSERT_TRUE(stx.stx_mask & STATX_VERSION);
   ASSERT_NE(stx.stx_version, old_change_attr);
+  std::cout << "version=" << stx.stx_version << std::endl;
 
   ceph_shutdown(cmount);
 }

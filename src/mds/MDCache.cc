@@ -2154,6 +2154,7 @@ void MDCache::predirty_journal_parents(MutationRef mut, EMetaBlob *blob,
       if (do_parent_mtime) {
 	pf->fragstat.mtime = mut->get_op_stamp();
 	pf->fragstat.change_attr++;
+	dout(10) << "predirty_journal_parents bumping change_attr to " << pf->fragstat.change_attr << " on " << parent << dendl;
 	if (pf->fragstat.mtime > pf->rstat.rctime) {
 	  dout(10) << "predirty_journal_parents updating mtime on " << *parent << dendl;
 	  pf->rstat.rctime = pf->fragstat.mtime;

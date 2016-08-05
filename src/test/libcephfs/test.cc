@@ -1444,6 +1444,37 @@ TEST(LibCephFS, Btime) {
   ceph_shutdown(cmount);
 }
 
+TEST(LibCephFS, SetBtime) {
+  struct ceph_mount_info *cmount;
+  ASSERT_EQ(ceph_create(&cmount, NULL), 0);
+  ASSERT_EQ(ceph_conf_read_file(cmount, NULL), 0);
+  ASSERT_EQ(0, ceph_conf_parse_env(cmount, NULL));
+  ASSERT_EQ(ceph_mount(cmount, "/"), 0);
+
+  char filename[32];
+  sprintf(filename, "/setbtime%x", getpid());
+
+  ceph_unlink(cmount, filename);
+  int fd = ceph_open(cmount, filename, O_RDWR|O_CREAT|O_EXCL, 0666);
+  ASSERT_LT(0, fd);
+  ceph_close(cmount, fd);
+
+  struct statx stx;
+
+  stx.stx_btime = 1;
+  stx.stx_btime_ns = 2;
+
+  ASSERT_EQ(ceph_setattrx(cmount, filename, &stx, CEPH_SETATTR_BTIME), 0);
+
+  ASSERT_EQ(ceph_statx(cmount, filename, 0, STATX_BTIME, &stx), 0);
+  ASSERT_TRUE(stx.stx_mask & STATX_BTIME);
+
+  ASSERT_EQ(stx.stx_btime, 1);
+  ASSERT_EQ(stx.stx_btime_ns, 2);
+
+  ceph_shutdown(cmount);
+}
+
 TEST(LibCephFS, LazyStatx) {
   struct ceph_mount_info *cmount1, *cmount2;
   ASSERT_EQ(ceph_create(&cmount1, NULL), 0);

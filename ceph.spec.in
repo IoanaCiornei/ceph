@@ -1352,6 +1352,7 @@ ln -sf %{_libdir}/librbd.so.1 /usr/lib64/qemu/librbd.so.1
 %defattr(-,root,root,-)
 %dir %{_includedir}/cephfs
 %{_includedir}/cephfs/libcephfs.h
+%{_includedir}/cephfs/statx.h
 %{_libdir}/libcephfs.so
 
 #################################################################################

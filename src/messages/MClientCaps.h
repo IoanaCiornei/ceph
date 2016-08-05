@@ -26,7 +26,7 @@ class MClientCaps : public Message {
  public:
   struct ceph_mds_caps_head head;
 
-  uint64_t size, max_size, truncate_size;
+  uint64_t size, max_size, truncate_size, change_attr;
   uint32_t truncate_seq;
   utime_t mtime, atime, ctime, btime;
   file_layout_t layout;
@@ -65,6 +65,7 @@ class MClientCaps : public Message {
   utime_t get_btime() { return btime; }
   utime_t get_mtime() { return mtime; }
   utime_t get_atime() { return atime; }
+  __u64 get_change_attr() { return change_attr; }
   __u32 get_time_warp_seq() { return time_warp_seq; }
 
   const file_layout_t& get_layout() {
@@ -112,6 +113,7 @@ class MClientCaps : public Message {
       max_size(0),
       truncate_size(0),
       truncate_seq(0),
+      change_attr(0),
       time_warp_seq(0),
       osd_epoch_barrier(0),
       oldest_flush_tid(0),
@@ -133,6 +135,7 @@ class MClientCaps : public Message {
       max_size(0),
       truncate_size(0),
       truncate_seq(0),
+      change_attr(0),
       time_warp_seq(0),
       osd_epoch_barrier(oeb),
       oldest_flush_tid(0),
@@ -158,6 +161,7 @@ class MClientCaps : public Message {
       max_size(0),
       truncate_size(0),
       truncate_seq(0),
+      change_attr(0),
       time_warp_seq(0),
       osd_epoch_barrier(oeb),
       oldest_flush_tid(0),
@@ -258,6 +262,7 @@ public:
     }
     if (header.version >= 9) {
       ::decode(btime, p);
+      ::decode(change_attr, p);
     }
   }
   void encode_payload(uint64_t features) {
@@ -316,6 +321,7 @@ public:
 
     ::encode(layout.pool_ns, payload);
     ::encode(btime, payload);
+    ::encode(change_attr, payload);
   }
 };
 

@@ -27,6 +27,7 @@
 #include "common/code_environment.h"
 
 #include "crush/CrushTreeDumper.h"
+#include "halton/HaltonWrapper.h"
 
 #define dout_subsys ceph_subsys_osd
 
@@ -1529,11 +1530,9 @@ int OSDMap::_pg_to_osds(const pg_pool_t& pool, pg_t pg,
   // map to osds[]
   ps_t pps = pool.raw_pg_to_pps(pg);  // placement ps
   unsigned size = pool.get_size();
+  int pg_id = ceph_stable_mod(pg.ps(), pool.get_pgp_num(), pool.get_pgp_num_mask());
 
-  // what crush rule?
-  int ruleno = crush->find_rule(pool.get_crush_ruleset(), pool.get_type(), size);
-  if (ruleno >= 0)
-    crush->do_rule(ruleno, pps, *osds, size, osd_weight);
+  HaltonWrapper::halton_do_mapping(pg_id, size, *osds);
 
   _remove_nonexistent_osds(pool, *osds);
 

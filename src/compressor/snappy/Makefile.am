@@ -13,7 +13,7 @@ libceph_snappy_la_CFLAGS = ${AM_CFLAGS}  \
   -I$(srcdir)/compressor/snappy/snappy-1.2.8
 libceph_snappy_la_CXXFLAGS= ${AM_CXXFLAGS} \
   -I$(srcdir)/compressor/snappy/snappy-1.2.8
-libceph_snappy_la_LIBADD = $(LIBCRUSH) $(PTHREAD_LIBS) $(EXTRALIBS)
+libceph_snappy_la_LIBADD = $(LIBCRUSH) $(LIBHALTON) $(PTHREAD_LIBS) $(EXTRALIBS)
 libceph_snappy_la_LDFLAGS = ${AM_LDFLAGS} -lsnappy -version-info 2:0:0
 if LINUX
 libceph_snappy_la_LDFLAGS += -export-symbols-regex '.*__compressor_.*'

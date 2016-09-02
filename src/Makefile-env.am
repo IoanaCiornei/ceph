@@ -201,6 +201,7 @@ LIBPERFGLUE = libperfglue.la
 LIBAUTH = libauth.la
 LIBMSG = libmsg.la
 LIBCRUSH = libcrush.la
+LIBHALTON = libhalton.la
 LIBCOMPRESSOR = libcompressor.la
 LIBJSON_SPIRIT = libjson_spirit.la
 LIBKV = libkv.a

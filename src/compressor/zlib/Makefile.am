@@ -12,7 +12,7 @@ compressor/zlib/CompressionPluginZlib.cc: ./ceph_ver.h
 libceph_zlib_la_SOURCES = ${zlib_sources}
 libceph_zlib_la_CFLAGS = ${AM_CFLAGS}  
 libceph_zlib_la_CXXFLAGS= ${AM_CXXFLAGS} 
-libceph_zlib_la_LIBADD = $(LIBCRUSH) $(PTHREAD_LIBS) $(EXTRALIBS)
+libceph_zlib_la_LIBADD = $(LIBCRUSH) $(LIBHALTON)  $(PTHREAD_LIBS) $(EXTRALIBS)
 libceph_zlib_la_LDFLAGS = ${AM_LDFLAGS} -lz -version-info 2:0:0
 if LINUX
 libceph_zlib_la_LDFLAGS += -export-symbols-regex '.*__compressor_.*'

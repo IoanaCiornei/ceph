@@ -41,7 +41,7 @@ libec_example_la_SOURCES = \
 test/erasure-code/ErasureCodePluginExample.cc: ./ceph_ver.h
 libec_example_la_CFLAGS = ${AM_CFLAGS}
 libec_example_la_CXXFLAGS= ${AM_CXXFLAGS}
-libec_example_la_LIBADD = $(LIBCRUSH) $(PTHREAD_LIBS) $(EXTRALIBS)
+libec_example_la_LIBADD = $(LIBCRUSH) $(LIBHALTON) $(PTHREAD_LIBS) $(EXTRALIBS)
 libec_example_la_LDFLAGS = ${AM_LDFLAGS} -module -avoid-version -shared -rpath /nowhere
 if LINUX
 libec_example_la_LDFLAGS += -export-symbols-regex '.*__erasure_code_.*'

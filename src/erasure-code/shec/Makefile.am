@@ -49,7 +49,7 @@ libec_shec_generic_la_CXXFLAGS= ${AM_CXXFLAGS} \
 	-I$(srcdir)/erasure-code/jerasure/gf-complete/include \
 	-I$(srcdir)/erasure-code/jerasure \
 	-I$(srcdir)/erasure-code/shec
-libec_shec_generic_la_LIBADD = $(LIBCRUSH) $(PTHREAD_LIBS) $(EXTRALIBS)
+libec_shec_generic_la_LIBADD = $(LIBCRUSH) $(LIBHALTON) $(PTHREAD_LIBS) $(EXTRALIBS)
 libec_shec_generic_la_LDFLAGS = ${AM_LDFLAGS} -module -avoid-version -shared
 if LINUX
 libec_shec_generic_la_LDFLAGS += -export-symbols-regex '.*__erasure_code_.*'
@@ -75,7 +75,7 @@ libec_shec_neon_la_CXXFLAGS= ${AM_CXXFLAGS} \
 	-I$(srcdir)/erasure-code/jerasure/gf-complete/include \
 	-I$(srcdir)/erasure-code/jerasure \
 	-I$(srcdir)/erasure-code/shec
-libec_shec_neon_la_LIBADD = $(LIBCRUSH) $(PTHREAD_LIBS) $(EXTRALIBS)
+libec_shec_neon_la_LIBADD = $(LIBCRUSH) $(LIBHALTON) $(PTHREAD_LIBS) $(EXTRALIBS)
 libec_shec_neon_la_LDFLAGS = ${AM_LDFLAGS} -module -avoid-version -shared
 if LINUX
 libec_shec_neon_la_LDFLAGS += -export-symbols-regex '.*__erasure_code_.*'
@@ -104,7 +104,7 @@ libec_shec_sse3_la_CXXFLAGS= ${AM_CXXFLAGS} \
 	-I$(srcdir)/erasure-code/jerasure/gf-complete/include \
 	-I$(srcdir)/erasure-code/jerasure \
 	-I$(srcdir)/erasure-code/shec
-libec_shec_sse3_la_LIBADD = $(LIBCRUSH) $(PTHREAD_LIBS) $(EXTRALIBS)
+libec_shec_sse3_la_LIBADD = $(LIBCRUSH) $(LIBHALTON) $(PTHREAD_LIBS) $(EXTRALIBS)
 libec_shec_sse3_la_LDFLAGS = ${AM_LDFLAGS} -module -avoid-version -shared
 if LINUX
 libec_shec_sse3_la_LDFLAGS += -export-symbols-regex '.*__erasure_code_.*'
@@ -137,7 +137,7 @@ libec_shec_sse4_la_CXXFLAGS= ${AM_CXXFLAGS} \
 	-I$(srcdir)/erasure-code/jerasure/gf-complete/include \
 	-I$(srcdir)/erasure-code/jerasure \
 	-I$(srcdir)/erasure-code/shec
-libec_shec_sse4_la_LIBADD = $(LIBCRUSH) $(PTHREAD_LIBS) $(EXTRALIBS)
+libec_shec_sse4_la_LIBADD = $(LIBCRUSH) $(LIBHALTON) $(PTHREAD_LIBS) $(EXTRALIBS)
 libec_shec_sse4_la_LDFLAGS = ${AM_LDFLAGS} -module -avoid-version -shared
 if LINUX
 libec_shec_sse4_la_LDFLAGS += -export-symbols-regex '.*__erasure_code_.*'
@@ -151,7 +151,7 @@ libec_shec_la_SOURCES = \
 	erasure-code/shec/ErasureCodePluginSelectShec.cc
 libec_shec_la_CFLAGS = ${AM_CFLAGS}
 libec_shec_la_CXXFLAGS= ${AM_CXXFLAGS}
-libec_shec_la_LIBADD = $(LIBCRUSH) $(PTHREAD_LIBS) $(EXTRALIBS)
+libec_shec_la_LIBADD = $(LIBCRUSH) $(LIBHALTON) $(PTHREAD_LIBS) $(EXTRALIBS)
 libec_shec_la_LDFLAGS = ${AM_LDFLAGS} -module -avoid-version -shared
 if LINUX
 libec_shec_la_LDFLAGS += -export-symbols-regex '.*__erasure_code_.*'

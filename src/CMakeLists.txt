@@ -188,6 +188,12 @@ set(crush_srcs
 
 add_library(crush STATIC ${crush_srcs})
 
+set(halton_srcs
+  pghalton/halton.c
+  pghalton/HaltonWrapper.cc)
+
+add_library(halton STATIC ${halton_srcs})
+
 add_subdirectory(json_spirit)
 
 include_directories("${CMAKE_SOURCE_DIR}/src/xxHash")
@@ -226,6 +232,7 @@ set(libcommon_files
   common/bloom_filter.cc
   common/Readahead.cc
   ${crush_srcs}
+  ${halton_srcs}
   common/cmdparse.cc
   common/escape.c
   common/io_priority.cc

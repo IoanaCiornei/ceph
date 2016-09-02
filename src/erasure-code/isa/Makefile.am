@@ -68,7 +68,7 @@ libisa_la_CCASFLAGS = ${AM_CCASFLAGS} -I $(srcdir)/erasure-code/isa/isa-l/includ
 libisa_la_LIBTOOLFLAGS = --tag=CC
 
 libec_isa_la_SOURCES =
-libec_isa_la_LIBADD = libisa.la $(LIBCRUSH) $(PTHREAD_LIBS) $(EXTRALIBS)
+libec_isa_la_LIBADD = libisa.la $(LIBCRUSH) $(LIBHALTON) $(PTHREAD_LIBS) $(EXTRALIBS)
 libec_isa_la_LDFLAGS = ${AM_LDFLAGS} -module -avoid-version -shared
 if LINUX
 libec_isa_la_LDFLAGS += -export-symbols-regex '.*__erasure_code_.*'

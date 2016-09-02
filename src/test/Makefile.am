@@ -216,7 +216,7 @@ unittest_util_LDADD = $(LIBCOMMON) -lm $(UNITTEST_LDADD) $(CRYPTO_LIBS) $(EXTRAL
 check_TESTPROGRAMS += unittest_util
 
 unittest_crush_wrapper_SOURCES = test/crush/CrushWrapper.cc
-unittest_crush_wrapper_LDADD = $(UNITTEST_LDADD) $(CEPH_GLOBAL) $(LIBCRUSH)
+unittest_crush_wrapper_LDADD = $(UNITTEST_LDADD) $(CEPH_GLOBAL) $(LIBCRUSH) $(LIBHALTON)
 unittest_crush_wrapper_CXXFLAGS = $(UNITTEST_CXXFLAGS) -O2
 check_TESTPROGRAMS += unittest_crush_wrapper
 

@@ -9,7 +9,7 @@ noinst_HEADERS += test/compressor/compressor_example.h
 test/compressor/compressor_plugin_example.cc: ./ceph_ver.h
 libceph_example_la_CFLAGS = ${AM_CFLAGS}
 libceph_example_la_CXXFLAGS= ${AM_CXXFLAGS}
-libceph_example_la_LIBADD = $(LIBCRUSH) $(PTHREAD_LIBS) $(EXTRALIBS)
+libceph_example_la_LIBADD = $(LIBCRUSH) $(LIBHALTON) $(PTHREAD_LIBS) $(EXTRALIBS)
 libceph_example_la_LDFLAGS = ${AM_LDFLAGS} -export-symbols-regex '.*__compression_.*'
 compressorlib_LTLIBRARIES += libceph_example.la
 

@@ -16,7 +16,10 @@ void HaltonWrapper::halton_do_mapping(int pg_id, int max_devices, unsigned repli
 	int rawout[replication];
 
 	halton(pg_id, max_devices, replication, rawout);
+	out.resize(replication);
 	for (unsigned i = 0; i < replication; i++)
 		out[i] = rawout[i];
+
+	fprintf(stderr, "ana are mere\n");
 }
 

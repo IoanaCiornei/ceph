@@ -93,4 +93,8 @@ void halton(int pg_id, int max_devices, unsigned replication, int *rawout)
 	for (i = 0; i < replication; i++)
 		fprintf(stderr, " %d ", rawout[i]);
 	fprintf(stderr, "]\n");
+
+
+	/* free the space used by the layout */
+	free(layout);
 }

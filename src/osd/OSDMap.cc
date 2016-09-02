@@ -1532,7 +1532,7 @@ int OSDMap::_pg_to_osds(const pg_pool_t& pool, pg_t pg,
   unsigned size = pool.get_size();
   int pg_id = ceph_stable_mod(pg.ps(), pool.get_pgp_num(), pool.get_pgp_num_mask());
 
-  HaltonWrapper::halton_do_mapping(pg_id, size, *osds);
+  HaltonWrapper::halton_do_mapping(pg_id, get_max_osd(), size, *osds);
 
   _remove_nonexistent_osds(pool, *osds);
 

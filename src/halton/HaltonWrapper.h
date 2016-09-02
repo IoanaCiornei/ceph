@@ -6,7 +6,7 @@
 class HaltonWrapper {
 
 public:
-	static int halton_do_mapping(int pg_id, unsigned replication, std::vector<int>& out);
+	static void halton_do_mapping(int pg_id, int max_devices, unsigned replication, std::vector<int>& out);
 };
 
 #endif

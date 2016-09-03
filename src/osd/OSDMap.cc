@@ -29,6 +29,8 @@
 #include "crush/CrushTreeDumper.h"
 #include "halton/HaltonWrapper.h"
 
+#include <iostream>
+
 #define dout_subsys ceph_subsys_osd
 
 // ----------------------------------
@@ -1161,6 +1163,8 @@ void OSDMap::dedup(const OSDMap *o, OSDMap *n)
     n->crush = o->crush;
   }
 
+  std::cout << __LINE__ << " " << __func__ << std::endl;
+
   // does pg_temp match?
   if (o->pg_temp->size() == n->pg_temp->size()) {
     if (*o->pg_temp == *n->pg_temp)
@@ -1184,6 +1188,7 @@ void OSDMap::remove_redundant_temporaries(CephContext *cct, const OSDMap& osdmap
 {
   ldout(cct, 10) << "remove_redundant_temporaries" << dendl;
 
+  std::cout << __LINE__ << " " << __func__ << std::endl;
   for (map<pg_t,vector<int32_t> >::iterator p = osdmap.pg_temp->begin();
        p != osdmap.pg_temp->end();
        ++p) {
@@ -1195,6 +1200,7 @@ void OSDMap::remove_redundant_temporaries(CephContext *cct, const OSDMap& osdmap
       ldout(cct, 10) << " removing pg_temp " << p->first
         << " for inexistent pool " << p->first.pool() << dendl;
       pending_inc->new_pg_temp[p->first].clear();
+      std::cout << __LINE__ << " " << __func__ << std::endl;
 
     } else if (pending_inc->new_pg_temp.count(p->first) == 0) {
       vector<int> raw_up;
@@ -1203,6 +1209,7 @@ void OSDMap::remove_redundant_temporaries(CephContext *cct, const OSDMap& osdmap
       if (raw_up == p->second) {
         ldout(cct, 10) << " removing unnecessary pg_temp " << p->first << " -> " << p->second << dendl;
         pending_inc->new_pg_temp[p->first].clear();
+	std::cout << __LINE__ << " " << __func__ << std::endl;
       }
     }
   }
@@ -1239,6 +1246,7 @@ void OSDMap::remove_down_temps(CephContext *cct,
   for (map<pg_t,vector<int32_t> >::iterator p = tmpmap.pg_temp->begin();
        p != tmpmap.pg_temp->end();
        ++p) {
+    std::cout << __LINE__ << " " << __func__ << std::endl;
     unsigned num_up = 0;
     for (vector<int32_t>::iterator i = p->second.begin();
 	 i != p->second.end();
@@ -1419,6 +1427,7 @@ int OSDMap::apply_incremental(const Incremental &inc)
       pg_temp->erase(p->first);
     else
       (*pg_temp)[p->first] = p->second;
+    std::cout << __LINE__ << " " << __func__ << std::endl;
   }
 
   for (map<pg_t,int32_t>::const_iterator p = inc.new_primary_temp.begin();
@@ -1631,12 +1640,17 @@ void OSDMap::_apply_primary_affinity(ps_t seed,
   }
 }
 
+void print_vector(vector<int> array, string message);
+
 void OSDMap::_get_temp_osds(const pg_pool_t& pool, pg_t pg,
                             vector<int> *temp_pg, int *temp_primary) const
 {
   pg = pool.raw_pg_to_pg(pg);
   map<pg_t,vector<int32_t> >::const_iterator p = pg_temp->find(pg);
   temp_pg->clear();
+
+  print_vector(p->second, "pg_temp");
+
   if (p != pg_temp->end()) {
     for (unsigned i=0; i<p->second.size(); i++) {
       if (!exists(p->second[i]) || is_down(p->second[i])) {
@@ -1692,6 +1706,18 @@ void OSDMap::pg_to_raw_up(pg_t pg, vector<int> *up, int *primary) const
   _apply_primary_affinity(pps, *pool, up, primary);
 }
   
+
+void print_vector(vector<int> array, string message)
+{
+  int len = array.size();
+
+  cout << message << ": [ ";
+  for (int i = 0; i < len; i++)
+    cout << " " << array[i];
+  cout << "]\n";
+
+}
+
 void OSDMap::_pg_to_up_acting_osds(const pg_t& pg, vector<int> *up, int *up_primary,
                                    vector<int> *acting, int *acting_primary) const
 {
@@ -1713,10 +1739,19 @@ void OSDMap::_pg_to_up_acting_osds(const pg_t& pg, vector<int> *up, int *up_prim
   int _up_primary;
   int _acting_primary;
   ps_t pps;
+
   _pg_to_osds(*pool, pg, &raw, &_up_primary, &pps);
+  print_vector(raw, "raw vector");
+
   _raw_to_up_osds(*pool, raw, &_up, &_up_primary);
+  print_vector(_up, "up vector");
+
   _apply_primary_affinity(pps, *pool, &_up, &_up_primary);
+  print_vector(_up, "after applyint primary affinity");
+
   _get_temp_osds(*pool, pg, &_acting, &_acting_primary);
+  print_vector(_acting, "temp osds = acting");
+
   if (_acting.empty()) {
     _acting = _up;
     if (_acting_primary == -1) {

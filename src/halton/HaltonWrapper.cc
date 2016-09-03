@@ -11,6 +11,8 @@ extern "C" {
 #include "halton.h"
 }
 
+#define dout_subsys ceph_subsys_crush
+
 void HaltonWrapper::halton_do_mapping(int pg_id, int max_devices, unsigned replication, std::vector<int>& out)
 {
 	int rawout[replication];

@@ -3321,10 +3321,12 @@ extern "C" int rados_read(rados_ioctx_t io, const char *o, char *buf, size_t len
   bufferptr bp = buffer::create_static(len, buf);
   bl.push_back(bp);
 
+  std::cout << "3324 rados_read\n";
   ret = ctx->read(oid, bl, len, off);
   if (ret >= 0) {
     if (bl.length() > len) {
       tracepoint(librados, rados_read_exit, -ERANGE, NULL);
+      std::cout << "3329 rados_read\n";
       return -ERANGE;
     }
     if (!bl.is_provided_buffer(buf))
@@ -3332,6 +3334,7 @@ extern "C" int rados_read(rados_ioctx_t io, const char *o, char *buf, size_t len
     ret = bl.length();    // hrm :/
   }
 
+  std::cout << "3337 rados_read\n";
   tracepoint(librados, rados_read_exit, ret, buf);
   return ret;
 }

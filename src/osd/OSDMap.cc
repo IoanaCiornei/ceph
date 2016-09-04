@@ -1649,8 +1649,6 @@ void OSDMap::_get_temp_osds(const pg_pool_t& pool, pg_t pg,
   map<pg_t,vector<int32_t> >::const_iterator p = pg_temp->find(pg);
   temp_pg->clear();
 
-  print_vector(p->second, "pg_temp");
-
   if (p != pg_temp->end()) {
     for (unsigned i=0; i<p->second.size(); i++) {
       if (!exists(p->second[i]) || is_down(p->second[i])) {

@@ -8,8 +8,6 @@
 
 #define HALTON_BASE 2
 
-static int remapped_index;
-
 static void print_placement(int *array, int size, const char *message)
 {
 	int i;
@@ -80,9 +78,10 @@ static int is_element_of(int elem, int *array, int size)
 	return 0;
 }
 
-static void fix_nonexistant_osds(int *ideal_out, int replication, int max_devices, int *raw_out)
+static void fix_nonexistant_osds(int *ideal_out, int pg_id, int replication, int max_devices, int *raw_out)
 {
 	int i, remapped_osd, up_index;
+	int remapped_index;
 	int *up_osds;
 
 	up_osds = malloc(max_devices * sizeof(int));
@@ -94,6 +93,7 @@ static void fix_nonexistant_osds(int *ideal_out, int replication, int max_device
 		up_osds[i] = i;
 
 	remapped_osd = -1;
+	remapped_index = pg_id;
 	for (i = 0; i < replication; i++) {
 
 		if (ideal_out[i] >= max_devices) {
@@ -163,6 +163,6 @@ void halton(int pg_id, int max_devices, unsigned replication, int *raw_out)
 	print_placement(ideal_out, replication, "ideal_out");
 
 	/* remap the nonexistant OSDs */
-	fix_nonexistant_osds(ideal_out, replication, max_devices, raw_out);
+	fix_nonexistant_osds(ideal_out, pg_id, replication, max_devices, raw_out);
 	print_placement(raw_out, replication, "raw_out");
 }
